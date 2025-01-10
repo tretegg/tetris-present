@@ -1,19 +1,25 @@
 <script lang="ts">
-    import PieChart from '$lib/components/chart.svelte';
+	import PieChart from "$lib/components/chart.svelte";
 
-    interface PieData {
-      label: string;
-      value: number;
-      color: string;
-    }
-  
-    const chartData: PieData[] = [
-      { label: 'Svelte', value: 74.5, color: '#ff3e00' },
-      { label: 'Typescript', value: 12.3, color: '#3178c6' },
-      { label: 'Javascript', value: 11.7, color: '#f1e05a' },
-      { label: 'Other', value: 1.5, color: '#ededed' },
-    ];
-  </script>
-  
-  <PieChart data={chartData} />
-  
+	// Chart data types and interface
+	interface ChartData {
+		label: string;
+		value: number;
+		color: string;
+	}
+
+	// Sample data for our pie chart
+	let chartData: ChartData[] = $state([
+		{ label: "Sales", value: 35, color: "#FF6384" },
+		{ label: "Marketing", value: 25, color: "#36A2EB" },
+		{ label: "Development", value: 40, color: "#4BC0C0" },
+	]);
+</script>
+
+<div class="w-full min-h-screen bg-background text-foreground p-4 md:p-8">
+	<div class="max-w-3xl mx-auto">
+				<div class="w-full aspect-square max-w-md mx-auto">
+					<PieChart {chartData} />
+				</div>
+	</div>
+</div>
