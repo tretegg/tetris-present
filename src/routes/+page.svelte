@@ -1,12 +1,10 @@
-<script>
-	import PieChart from '$lib/components/chart.svelte';
-  
-	const data = [
-	  { label: 'Red', value: 30, color: '#f87171' },
-	  { label: 'Green', value: 40, color: '#34d399' },
-	  { label: 'Blue', value: 20, color: '#60a5fa' },
-	  { label: 'Yellow', value: 10, color: '#facc15' },
-	];
-  </script>
-  
-  <PieChart {data} size={50} />
+
+<div class="scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-800 scrollbar-thumb-rounded-md">
+	<img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" alt="lizard">
+	<img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" alt="lizard">
+	<img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" alt="lizard">
+	<img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" alt="lizard">
+	<img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" alt="lizard">
+	<img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" alt="lizard">
+	<img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" alt="lizard">
+</div>

@@ -1,3 +1,24 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+/* General scrollbar styles */
+::-webkit-scrollbar {
+    width: 8px; /* Adjust scrollbar width */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Transparent track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #292524; /* Neutral-800 color */
+  border-radius: 4px; /* Rounded corners */
+}
+
+/* Firefox-specific scrollbar styles */
+* {
+  scrollbar-width: thin; /* Thin scrollbar */
+  scrollbar-color: #5a5a5a transparent; /* Thumb and track colors */
+}
+  
