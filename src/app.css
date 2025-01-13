@@ -1,6 +1,7 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 /* General scrollbar styles */
 ::-webkit-scrollbar {
@@ -21,4 +22,13 @@
   scrollbar-width: thin; /* Thin scrollbar */
   scrollbar-color: #5a5a5a transparent; /* Thumb and track colors */
 }
-  
+
+body {
+  background: linear-gradient(to bottom right, white, black);
+  height: 100vh; /* Ensures the gradient fills the viewport height */
+  margin: 0; /* Removes any default margin */
+}
+
+.pixel {
+  font-family: 'Press Start 2P', cursive;
+}

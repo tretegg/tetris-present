@@ -11,12 +11,12 @@
 
 <header class="header fixed top-0 left-0 w-full flex justify-between items-center
 		p-4 border-b-2 border-gray-200 backdrop-blur bg-white/70 z-50">
-	<div class="logo">
+	<div class="logo pixel">
 		<h1>{title}</h1>
 	</div>
 	<nav class="nav">
 		{#each links as link}
-			<a href={link.href} class="p-4">{link.name}</a>
+			<a href={link.href} class="p-4 pixel">{link.name}</a>
 		{/each}
 	</nav>
 </header>
