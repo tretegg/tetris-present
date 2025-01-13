@@ -23,10 +23,15 @@
   scrollbar-color: #5a5a5a transparent; /* Thumb and track colors */
 }
 
+html, body {
+  height: 100%; /* Ensure the elements take up the full height of the content */
+  margin: 0;    /* Remove any default margin */
+}
+
 body {
   background: linear-gradient(to bottom right, white, black);
-  height: 100vh; /* Ensures the gradient fills the viewport height */
-  margin: 0; /* Removes any default margin */
+  background-attachment: fixed; /* Keeps the gradient fixed during scrolling */
+  background-size: cover;      /* Ensures the gradient covers the entire area */
 }
 
 .pixel {
