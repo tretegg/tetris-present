@@ -1,7 +1,8 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Press+Start+2P&display=swap');
+
 
 /* General scrollbar styles */
 ::-webkit-scrollbar {
@@ -30,10 +31,21 @@ html, body {
 
 body {
   background: linear-gradient(to bottom right, white, black);
-  background-attachment: fixed; /* Keeps the gradient fixed during scrolling */
-  background-size: cover;      /* Ensures the gradient covers the entire area */
 }
 
 .pixel {
   font-family: 'Press Start 2P', cursive;
+}
+
+
+.inter-bold {
+  font-family: "Inter", serif;
+  font-weight: bold;
+  font-style: normal;
+}
+
+.inter {
+  font-family: "Inter", serif;
+  font-weight: normal;
+  font-style: normal;
 }
