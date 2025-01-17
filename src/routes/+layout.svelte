@@ -1,11 +1,11 @@
 <script lang="ts">
 	import '../app.css';
 	let { children } = $props();
-	let title = "Tetris";
+	let title = "Tetris-Svelte";
 	let links = [
 		{ name: "Home", href: "/" },
 		{ name: "Play", href: "/play" },
-		{ name: "Github", href: "/github" },
+		{ name: "Github", href: "https://github.com/tretegg/tetris-svelte", target: "_blank" },
 	];
 </script>
 
@@ -16,7 +16,7 @@
 	</div>
 	<nav class="nav">
 		{#each links as link}
-			<a href={link.href} class="p-4 inter-bold hover:text-xl text-white transition-all duration-200">{link.name}</a>
+			<a href={link.href} target={link.target} class="p-4 inter-bold hover:text-xl text-white transition-all duration-200">{link.name}</a>
 		{/each}
 	</nav>
 </header>
