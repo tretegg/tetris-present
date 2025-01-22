@@ -28,6 +28,6 @@
 <!-- Glow effect -->
 <!-- svelte-ignore element_invalid_self_closing_tag -->
 <div 
-	class="pointer-events-none fixed inset-0 z-30" 
-	style:background="radial-gradient(250px circle at {x}px {y}px, rgba(255,255,255,0.15), transparent 40%)" 
+	class="pointer-events-none fixed inset-0 -z-10" 
+	style:background="radial-gradient(350px circle at {x}px {y}px, rgba(255,255,255,0.05), transparent 40%)" 
 />
