@@ -307,3 +307,166 @@ function updateScore(clearedLines: number) {
 
     if (client) client.updateScore(score)
 }`
+
+export const CLIENT_INIT = `
+(instance, socket, ...data) => {
+    let initData = data[0]
+
+    instance.updatePlayerData(socket.id, initData)
+
+    let player = instance.players[socket.id]
+
+    if (!player.name) player.name = "Player"
+
+    console.log("Client Initialized:", player.name)
+}`
+
+export const UPDATE_BROWSING = `
+// server.js
+updateBrowsingPlayers() {
+    this.io.to("browsing").emit("ROOMS", this.rooms)
+}
+    
+// client.ts's server event handler for room data
+"ROOMS": [
+    (client, _socket, rooms: Rooms) => {
+        console.log("ROOMS:", rooms)
+
+        client.rooms = rooms
+        client.ClientEvent("ROOMS", rooms)
+    }
+],`
+
+export const JOINING = `
+// server.js's client event handler for a "JOIN_ROOM" event.
+"JOIN_ROOM": [
+    (instance, socket, {gamemode, roomID}) => {
+        let roomData = instance.rooms[gamemode][roomID]
+
+        if (roomData.currentPlayers >= roomData.maxPlayers) {
+            socket.emit("GAME_FULL", {gamemode, roomID})
+            return
+        }
+
+        socket.leave("browsing")
+        // this line has been changed to work with this code block.
+        socket.join('room-$[roomID]')
+
+        roomData.currentPlayers += 1
+        instance.rooms[gamemode][roomID] = roomData
+        instance.playerRoomMap[socket.id] = {
+            id: roomID,
+            gamemode
+        }
+
+        socket.emit("ROOM_JOINED", instance.rooms[gamemode][roomID], gamemode)
+
+        instance.updateBrowsingPlayers()
+    } 
+],
+
+// client.ts's server event handler for a "ROOM_JOINED" event.
+"ROOM_JOINED": [
+    (client, _socket, room: Room, gamemode: GameModes) => {
+        // this line has been changed to work with this code block.
+        console.log('Room [room.name] Joined!')
+
+        if (!GAMEMODE_MAP[gamemode]) {
+            console.error("Invalid gamemode:", gamemode)
+            return
+        }
+
+        client.currentRoom = new GAMEMODE_MAP[gamemode](gamemode, room.id, client)
+        client.playerState = PLAYER_STATE.PLAYING
+
+        // @ts-ignore
+        let sendingRoom: Room & {gamemode: GameModes} = room
+        sendingRoom.gamemode = gamemode
+
+        client.ClientEvent("ROOM_JOINED", room)
+    }
+],`
+
+export const ROOM_HANDLING = `
+// server.js's abstract RoomHandler class.
+class RoomHandler {
+    gamemode
+    id
+    server
+
+    /**
+     * @type {[id: string]: Player}
+     */
+    players
+    
+    constructor(gamemode, id, tetrisServer) {
+        if (this.constructor == RoomHandler) {  
+            throw new Error("Abstract classes can't be instantiated.")
+        }
+
+        this.gamemode = gamemode
+        this.id = id
+        this.server = tetrisServer
+    }
+
+    destroy() {
+        throw new Error("Destroy not implemented.")
+    }
+
+    playerJoined(player) {
+        this.players[player.id] = player
+    }
+
+    playerUpdated(player) {
+        for (const v of Object.entries(player)) {
+            this.players[player.id][v[0]] = v[1]
+        }
+    }
+
+    updatePlayers(event, data) {
+        // this line has been changed to work with this code block.
+        this.server.io.of("/").to('room-$[this.id]').emit(event, data)
+    }
+}
+
+// client.ts's abstract ClientRoomHandler class.
+class ClientRoomHandler {
+    gamemode: string
+    id: string
+    client: TetrisClient
+    
+    players: {[id: string]: Player}
+    
+    constructor(gamemode: string, id: string, client: TetrisClient) {
+        if (this.constructor == ClientRoomHandler) {  
+            throw new Error("Abstract classes can't be instantiated.")
+        }
+
+        this.players = client.otherPlayers
+
+        client.hookClientEvent("PLAYER_UPDATE", (p: {[id:string]: Player}) => {
+            if (!this) return
+            
+            this.players = p
+        })
+
+        client._roomHookServerEvent("ROOM:TIMER_UPDATE", (data: any) => {
+            console.log("TIMER_UPDATE:", data)
+
+            this.event("ROOM:TIMER_UPDATE", data)
+        })
+
+        this.gamemode = gamemode
+        this.id = id
+        this.client = client
+    }
+
+    sync() {
+        throw new Error("Function Not Implemented!")
+    }
+
+    private event(eventName: RoomEvents, data: any) {
+        this.client._passUpEvent(eventName, data)
+    }
+}
+`

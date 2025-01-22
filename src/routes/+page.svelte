@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { on } from "svelte/events";
-	import { fade, scale } from "svelte/transition";
+	import { fade, slide } from "svelte/transition";
 	import ShowImage from "$lib/components/showImage.svelte";
 	import { CodeBlock, storeHighlightJs } from '@skeletonlabs/skeleton';
 	import hljs from 'highlight.js/lib/core';
@@ -10,41 +10,55 @@
 
 	import 'highlight.js/styles/github-dark.css';
 	import CursorGlow from "$lib/components/cursorGlow.svelte";
+	import Charts from "$lib/components/charts.svelte";
 
-	let pageLoaded = false;
+	let pageLoaded = $state(false);
 
 	onMount(() => {
 		hljs.registerLanguage('typescript', typescript);
 
-		storeHighlightJs.set(hljs);
-
+		storeHighlightJs.set(hljs);	
+		
 		setTimeout(() => {
 			pageLoaded = true
 		} , 500)
 	});
-
 </script>
 
-<div class="w-full h-full overflow-auto pt-[5.5%]">
+<svelte:head>
+	<title>Schmunktris</title>
+</svelte:head>
+
+<div class="w-full h-full overflow-auto pt-[5rem]">
+
+	{#if !pageLoaded}
+		<div transition:fade class="w-full h-full top-0 left-0 absolute flex flex-col items-center justify-center">
+			<!-- svelte-ignore element_invalid_self_closing_tag -->
+			<div class="w-24 h-24 rounded-full animate-spin border-8 border-white border-r-black"/>
+			<p class="text-white font-mono mt-6 text-xl">
+				Loading...
+			</p>
+		</div>
+	{/if}
 
 	<!-- Game Discription -->
 	{#if pageLoaded}
 		<div class=" w-full h-[20%] flex flex-col items-center justify-center">
 			<p in:fade={{duration: 2000}} class="inter-bold text-3xl text-center mt-2 text-white">Schmunktris</p>
-			<p in:fade={{duration: 2500}} class="inter text-center text-white">A Tetris clone made with <a href="https://svelte.dev/" class="text-blue-500 inter-bold">Sveltekit</a>, <a href="https://tailwindcss.com/" class="text-blue-500 inter-bold">TailwindCSS</a>, Typescript and <a href="https://socket.io/" class="text-blue-500 inter-bold">Socket.io</a></p>
+			<p in:fade={{duration: 2500}} class="inter text-center text-white">A multiplayer Tetris clone made with <a href="https://svelte.dev/" class="text-blue-500 inter-bold">Sveltekit</a>, <a href="https://tailwindcss.com/" class="text-blue-500 inter-bold">TailwindCSS</a>, <a href="https://www.typescriptlang.org" class="text-blue-500 inter-bold">Typescript</a> and <a href="https://socket.io/" class="text-blue-500 inter-bold">Socket.io</a></p>
 			<p in:fade={{duration: 2600}} class="inter text-center text-white">Heavily inspired by <a href="https://tetr.io/" class="text-blue-500 inter-bold">tetr.io</a></p>
 		</div>
 	{/if}
 
 	{#if pageLoaded}
-		
+		<Charts/>
 	{/if}
 
 	<!-- Process -->
 	{#if pageLoaded}
-		<div class="w-full h-fit flex flex-col items-center z-49">
+		<div class="w-full h-fit flex flex-col items-center z-49 pt-6">
 			<div class="inter text-left text-white ml-5 w-[80%]">
-				<p transition:scale={{duration:1000}} class="inter-bold text-3xl text-left mt-2 text-white">The process</p>
+				<p transition:slide={{duration:1000, axis:"x"}} class="inter-bold text-3xl text-left mt-2 text-white">The Process</p>
 				<p>We began by creating the base of the game, moving the pieces, collisions,</p>
 				<p>line clearing, scoring and the leveling system.</p>
 				<br>
@@ -110,14 +124,37 @@
 	
 				<br>
 					<p class="inter-bold text-3xl text-left mt-2 text-white">Multiplayer</p>
-					<p>The entire process of writing the multiplayer server for the game was a daunting task.</p>
+					<p class="inter-bold">The entire process of writing the multiplayer server for the game was a daunting task.</p>
 					<p>Sveltekit doesn't support websockets out of the box, so the only way to actually get real-time communication</p>
 					<p>from client to client was to write a custom server that utilized <a href="https://socket.io/" class="text-blue-500 inter-bold">Socket.io.</a></p> 
 
 					<br>
 					<p>Since getting Typescript working in the vite custom server enviroment was a thing we weren't even sure was possible</p>
 					<p>we decided it would be best to just write the entire thing in plain ol' javascript. And if that isn't the worst idea</p>
-					<p>we've probably had ever possibly. Plain javascript sucks we missed Typescript the ENTIRE time we were writing it.</p>
+					<p>we've possibly ever had. Plain javascript sucks in comparaison to Typescript. I (Liam) missed it the ENTIRE time we were writing it.</p>
+
+
+					<p class="inter-bold text-2xl text-left mt-8 text-white">Initial Socket Setup</p>
+					<p class="inter-bold">Using <a href="https://socket.io/" class="text-blue-500 inter-bold">Socket.io.</a> we make an initial connection to the server.</p>
+					<p>After this the client sends a `CLIENT_INIT` message to the server that creates the player on the server.</p>
+					<p class="text-neutral-400 text-sm my-2">(instance in this case is the TetrisServer class instance that the server creates when its started)</p>
+					<CodeBlock class="mb-8" rounded={"rounded-md"} button={"btn btn-sm !font-mono variant-soft !text-white"} lineNumbers={true} language="typescript" code={CODE.CLIENT_INIT}/>
+
+					<p class="inter-bold text-2xl text-left mt-8 text-white">Room Browser</p>
+					<p class="inter-bold">After the client is fully connected to the server. It starts receving information on the rooms that exist on the server.</p>
+					<p>The client then displays these rooms on its Room Browser.</p>
+					<CodeBlock class="mt-2 mb-8" rounded={"rounded-md"} button={"btn btn-sm !font-mono variant-soft !text-white"} lineNumbers={true} language="typescript" code={CODE.UPDATE_BROWSING}/>
+
+					<p class="inter-bold text-2xl text-left mt-8 text-white">Joining</p>
+					<p class="inter-bold">The player annouces a `JOIN_ROOM` event to the server and the server dispatches the relevant information to the player joining and other players in the room.</p>
+					<p>The server will also update the people who are currently in the room browser since a person joining a room will cause the rooms amount of current players to increase.</p>
+					<CodeBlock class="mt-2 mb-8" rounded={"rounded-md"} button={"btn btn-sm !font-mono variant-soft !text-white"} lineNumbers={true} language="typescript" code={CODE.JOINING}/>
+
+					<p class="inter-bold text-2xl text-left mt-8 text-white">Server & Client Room Handling</p>
+					<p class="inter-bold">Both the server and client have different classes defined for easier gameplay programming for gamemodes.</p>
+					<p>The server will create a new class with a specified class mapped in the `GAMEMODE_HANDLER_MAP` depending on the gamemode of the room.</p>
+					<p>The client will do the same with a class used to manage all of the client side jobs of the current gamemode.</p>
+					<CodeBlock class="mt-2 mb-8" rounded={"rounded-md"} button={"btn btn-sm !font-mono variant-soft !text-white"} lineNumbers={true} language="typescript" code={CODE.ROOM_HANDLING}/>
 
 			</div>
 		</div>

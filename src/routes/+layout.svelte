@@ -11,7 +11,7 @@
 </script>
 
 
-<header class="header top-0 left-0 w-full h-[8%] absolute flex justify-between items-center p-4 border-b-2 border-gray-200 backdrop-blur z-50">
+<header class="header top-0 left-0 w-full h-[5rem] absolute flex justify-between items-center p-4 border-b-2 border-gray-200 backdrop-blur z-50">
 	<div class="logo inter-bold text-2xl text-white">
 		<h1>{title}</h1>
 	</div>
