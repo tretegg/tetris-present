@@ -68,8 +68,8 @@
         <h2 class="font-bold text-2xl text-left w-full">
             Code Percentages
         </h2>
-        <p class="w-[50%] text-left">
-            Our framework of choice for this project was Sveltekit, which means we'd have to use Svelte for most of our writing. The other half would be the server, written in just regular old Javascript, hence the ~30% of the codebase that consists of Javascript. 
+        <p class="w-[60%] text-left">
+            Our framework of choice for this project was Sveltekit, which means we'd have to use Svelte/TypeScript for most of our writing. The other half would be the server, written in just regular old Javascript, hence the ~20% of the codebase that consists of Javascript. 
         </p>
     </div>
 </div>

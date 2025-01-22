@@ -45,6 +45,7 @@
 	{#if pageLoaded}
 		<div class=" w-full h-[20%] flex flex-col items-center justify-center">
 			<p in:fade={{duration: 2000}} class="inter-bold text-3xl text-center mt-2 text-white">Schmunktris</p>
+			<p in:fade={{duration: 2000}} class="text-neutral-400 text-sm">(the code for this site is available <a href="https://github.com/tretegg/tetris-present" class="text-blue-500 inter-bold">here</a>)</p>
 			<p in:fade={{duration: 2500}} class="inter text-center text-white">A multiplayer Tetris clone made with <a href="https://svelte.dev/" class="text-blue-500 inter-bold">Sveltekit</a>, <a href="https://tailwindcss.com/" class="text-blue-500 inter-bold">TailwindCSS</a>, <a href="https://www.typescriptlang.org" class="text-blue-500 inter-bold">Typescript</a> and <a href="https://socket.io/" class="text-blue-500 inter-bold">Socket.io</a></p>
 			<p in:fade={{duration: 2600}} class="inter text-center text-white">Heavily inspired by <a href="https://tetr.io/" class="text-blue-500 inter-bold">tetr.io</a></p>
 		</div>
@@ -156,9 +157,19 @@
 					<p>The client will do the same with a class used to manage all of the client side jobs of the current gamemode.</p>
 					<CodeBlock class="mt-2 mb-8" rounded={"rounded-md"} button={"btn btn-sm !font-mono variant-soft !text-white"} lineNumbers={true} language="typescript" code={CODE.ROOM_HANDLING}/>
 
-			</div>
+					<p class="inter-bold text-2xl text-left mt-8 text-white">During The Game</p>
+					<p class="inter-bold">When the client and server are both synced and the client is in a game, the client will start syncing every time the canvas updates.</p>
+					<p>These updates usually contain the entire grid that the client currently has processed.</p>
+					<p>There is not anti-cheat due to that being out of the scope of this project.</p>
+					<CodeBlock class="mt-2 mb-8" rounded={"rounded-md"} button={"btn btn-sm !font-mono variant-soft !text-white"} lineNumbers={true} language="typescript" code={CODE.DURING_GAME}/>
+			
+					<p class="inter-bold text-3xl text-left mt-12 text-white">Overall</p>
+					<p class="inter-bold">Doing this project, we learned several things</p>
+					<p>• Writing a custom server to make using websockets possible in Sveltekit.</p>
+					<p>• Developing a fully fledged game in the Sveltekit context.</p>
+					<p>• Using several internal & external (npm) svelte libraries that we likely wouldn't have if not for this project.</p>
+					<p class="mb-12">• How to use more complex Svelte animations.</p>
+				</div>
 		</div>
 	{/if}
-
-	<CursorGlow/>
 </div>

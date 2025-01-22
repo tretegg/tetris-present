@@ -22,6 +22,8 @@
 	</nav>
 </header>
 
+<CursorGlow/>
+
 <div class="w-full h-[100%]">
 	{@render children()}
 </div>

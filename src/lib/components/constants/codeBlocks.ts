@@ -470,3 +470,57 @@ class ClientRoomHandler {
     }
 }
 `
+
+export const DURING_GAME = `
+// server.js's PLAYER_UPDATE handler.
+"PLAYER_UPDATE": [
+    (instance, socket, ...data) => {
+        if (!instance.playerRoomMap[socket.id]) return
+        
+        let player = data[0]
+        instance.updatePlayerData(socket.id, player)
+
+        let toSend = Object.assign({}, player)
+        delete toSend.socket
+        toSend.id = socket.id
+
+        // (...)
+
+        instance.updateOtherPlayers(socket.id, "PLAYER_UPDATE", toSend)
+    }
+]
+
+// client.ts's PLAYER_UPDATE handler, this event is called when another player in the 
+// same room sends and update to the server.
+"PLAYER_UPDATE": [
+    (client: TetrisClient, _socket: Socket, update: ServerPlayerUpdateData, ..._data: any) => {
+        let playerData = Object.assign({}, update) as Player
+
+        if (!playerData) return
+        const id = update.id
+
+        // @ts-ignore
+        delete playerData.id
+        client.otherPlayers[id] = playerData
+
+        // this line has been edited to work with this code block.
+        console.log('Player [playerData.name] Updated. Score:', playerData.score)
+
+        client.ClientEvent("PLAYER_UPDATE", client.otherPlayers)
+    }
+]
+
+// client.ts's 'syncWithServer' function.
+// this function sends all of the current player data to the server 
+syncWithServer() {
+    // (...)
+
+    if (!this.playerUpdated) return
+    if (!this.connectionEstablished) return
+    if (!this.socket) return
+    if (!this.currentRoom) return
+
+    this.sendEvent("PLAYER_UPDATE", this.player as PlayerUpdateData)
+    this.playerUpdated = false
+}
+`
