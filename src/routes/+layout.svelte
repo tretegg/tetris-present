@@ -10,7 +10,7 @@
 </script>
 
 <header class="header fixed top-0 left-0 w-full flex justify-between items-center
-		p-4 border-b-2 border-gray-200 backdrop-blur bg-black z-50">
+		p-4 border-b-2 border-gray-200 backdrop-blur z-50">
 	<div class="logo inter-bold text-2xl text-white">
 		<h1>{title}</h1>
 	</div>
